@@ -1,12 +1,25 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from './Sort.module.scss'
 
-export default function Sort() {
+const list = [
+	{
+		name: 'популярности',
+		sortProperty: 'rating',
+	},
+	{
+		name: 'цене',
+		sortProperty: 'price',
+	},
+	{
+		name: 'алфавиту',
+		sortProperty: 'title',
+	},
+]
+
+export default function Sort({ value, onClickSort }) {
 	const [isVisiblePopup, setIsVisiblePopup] = useState(false)
-	const [activeIndex, setActiveIndex] = useState(0)
+	const selectedItem = value.name
 	const sortingArea = useRef(null)
-	const list = ['популярности', 'цене', 'алфавиту']
-	const selectedItem = list[activeIndex]
 
 	function closePopup(e) {
 		e.stopPropagation()
@@ -45,17 +58,17 @@ export default function Sort() {
 			{isVisiblePopup && (
 				<div className={styles.popup}>
 					<ul>
-						{list.map((item, index) => (
-							<li key={item}>
+						{list.map((obj, index) => (
+							<li key={obj.sort}>
 								<button
 									className={`${styles.item} ${
-										activeIndex === index ? styles.active : ''
+										value.sortProperty === obj.sortProperty ? styles.active : ''
 									}`}
 									onClick={() => {
-										setActiveIndex(index)
+										onClickSort(obj)
 									}}
 								>
-									{item}
+									{obj.name}
 								</button>
 							</li>
 						))}

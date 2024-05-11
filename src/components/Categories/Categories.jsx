@@ -1,9 +1,6 @@
-import { useState } from 'react'
 import styles from './Categories.module.scss'
 
-export default function Categories() {
-	const [activeIndex, setActiveIndex] = useState(0)
-
+export default function Categories({ value, onClickCategory }) {
 	const categories = [
 		'Все',
 		'Мясные',
@@ -13,10 +10,6 @@ export default function Categories() {
 		'Закрытые',
 	]
 
-	const onClickCategory = (index) => {
-		setActiveIndex(index)
-	}
-
 	return (
 		<div className={styles.categories}>
 			<ul>
@@ -25,7 +18,7 @@ export default function Categories() {
 						<button
 							onClick={() => onClickCategory(index)}
 							className={`${styles.item} ${
-								activeIndex === index ? styles.active : ''
+								value === index ? styles.active : ''
 							}`}
 						>
 							{categoryName}
