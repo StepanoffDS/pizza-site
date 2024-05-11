@@ -1,6 +1,6 @@
 # Pizza Store
 
-### Check: ---
+### Check: https://stepanoffds.github.io/pizza-site/
 
 ## Stack:
 
