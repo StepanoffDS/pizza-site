@@ -14,9 +14,9 @@ export default function App() {
 			<div className='content'>
 				<div className='container'>
 					<Routes>
-						<Route path='/' element={<Home />} />
-						<Route path='/cart' element={<Cart />} />
-						<Route path='*' element={<NotFound />} />
+						<Route path='/pizza-site/' element={<Home />} />
+						<Route path='/pizza-site/cart' element={<Cart />} />
+						<Route path='/pizza-site/*' element={<NotFound />} />
 					</Routes>
 				</div>
 			</div>

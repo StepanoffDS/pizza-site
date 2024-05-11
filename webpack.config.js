@@ -5,4 +5,7 @@ module.exports = {
 		path: path.resolve(__dirname, 'build'),
 		publicPath: '/pizza-site/',
 	},
+	devServer: {
+		publicPath: '/pizza-site/',
+	},
 }

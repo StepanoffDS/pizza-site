@@ -7,7 +7,7 @@ export default function Header() {
 	return (
 		<div className={styles.header}>
 			<div className={styles.container}>
-				<Link to='/' className={styles.logo}>
+				<Link to='/pizza-site/' className={styles.logo}>
 					<img width='38' src={logo} alt='Pizza logo' />
 
 					<div>
@@ -16,7 +16,7 @@ export default function Header() {
 					</div>
 				</Link>
 				<div className={styles.cart}>
-					<Link to='/cart' className='button button--cart'>
+					<Link to='/pizza-site/cart' className='button button--cart'>
 						<span>520 ₽</span>
 						<div className='button__delimiter'></div>
 						<svg
