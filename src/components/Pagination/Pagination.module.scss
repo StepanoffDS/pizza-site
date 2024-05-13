@@ -1,0 +1,41 @@
+@import './../../scss/variables';
+
+.pagination {
+	margin-top: 2rem;
+
+	display: flex;
+	justify-content: center;
+	gap: 1rem;
+
+	> li {
+		font-size: 1rem;
+		border: 1px solid #c1c1c1;
+		border-radius: 0.5rem;
+		transition: 0.1s;
+		cursor: pointer;
+
+		&:hover {
+			border-color: $orange;
+			background-color: $orange;
+			color: white;
+		}
+
+		a {
+			padding: 0.5rem 1rem;
+			display: block;
+			color: inherit;
+		}
+	}
+
+	:global {
+		.previous,
+		.next {
+		}
+
+		.selected {
+			border-color: $orange;
+			background-color: $orange;
+			color: white;
+		}
+	}
+}

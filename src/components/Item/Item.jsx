@@ -12,11 +12,13 @@ export default function Content({ title, price, imageUrl, sizes, types }) {
 			<h4 className={styles.title}>{title}</h4>
 			<div className={styles.selector}>
 				<ul>
+					{/* {types.length === 1 && () => setActiveType(1)} */}
+
 					{types.map((type) => (
 						<li
 							key={type}
 							className={`${styles.type} ${
-								activeType === type ? styles.active : ''
+								types.indexOf(type) === activeType ? styles.active : ''
 							}`}
 						>
 							<button onClick={() => setActiveType(type)}>
