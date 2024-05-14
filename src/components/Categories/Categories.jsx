@@ -1,14 +1,20 @@
+import { useDispatch, useSelector } from 'react-redux'
+import { setCategoryId } from '../../store/slices/filterSlice'
+
 import styles from './Categories.module.scss'
 
-export default function Categories({ value, onClickCategory }) {
-	const categories = [
-		'Все',
-		'Мясные',
-		'Вегетарианская',
-		'Гриль',
-		'Острые',
-		'Закрытые',
-	]
+const categories = [
+	'Все',
+	'Мясные',
+	'Вегетарианская',
+	'Гриль',
+	'Острые',
+	'Закрытые',
+]
+
+export default function Categories() {
+	const dispatch = useDispatch()
+	const categoryIndex = useSelector((state) => state.filterReducer.categoryId)
 
 	return (
 		<div className={styles.categories}>
@@ -16,9 +22,9 @@ export default function Categories({ value, onClickCategory }) {
 				{categories.map((categoryName, index) => (
 					<li key={categoryName}>
 						<button
-							onClick={() => onClickCategory(index)}
+							onClick={() => dispatch(setCategoryId(index))}
 							className={`${styles.item} ${
-								value === index ? styles.active : ''
+								categoryIndex === index ? styles.active : ''
 							}`}
 						>
 							{categoryName}

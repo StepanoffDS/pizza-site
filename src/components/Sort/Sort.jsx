@@ -1,4 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
+
+import { useDispatch, useSelector } from 'react-redux'
+import { setSortType } from '../../store/slices/filterSlice'
+
 import styles from './Sort.module.scss'
 
 const list = [
@@ -16,9 +20,12 @@ const list = [
 	},
 ]
 
-export default function Sort({ value, onClickSort }) {
+export default function Sort() {
+	const dispatch = useDispatch()
+	const sortIndex = useSelector((state) => state.filterReducer.sort)
+
 	const [isVisiblePopup, setIsVisiblePopup] = useState(false)
-	const selectedItem = value.name
+	const selectedItem = sortIndex.name
 	const sortingArea = useRef(null)
 
 	function closePopup(e) {
@@ -62,11 +69,11 @@ export default function Sort({ value, onClickSort }) {
 							<li key={obj.sort}>
 								<button
 									className={`${styles.item} ${
-										value.sortProperty === obj.sortProperty ? styles.active : ''
+										sortIndex.sortProperty === obj.sortProperty
+											? styles.active
+											: ''
 									}`}
-									onClick={() => {
-										onClickSort(obj)
-									}}
+									onClick={() => dispatch(setSortType(obj))}
 								>
 									{obj.name}
 								</button>

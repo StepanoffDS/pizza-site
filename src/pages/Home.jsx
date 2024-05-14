@@ -1,5 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 
+import { useSelector } from 'react-redux'
+
 import Sort from './../components/Sort/Sort'
 import Categories from './../components/Categories/Categories'
 import Item from './../components/Item/Item'
@@ -8,14 +10,13 @@ import Pagination from '../components/Pagination/Pagination'
 import { SearchContext } from '../App'
 
 export default function Home() {
+	const { categoryId: categoryIndex, sort: sortIndex } = useSelector(
+		(state) => state.filterReducer
+	)
+
 	const { searchValue } = useContext(SearchContext)
 	const [isLoading, setIsLoading] = useState(true)
 	const [pizzas, setPizzas] = useState([])
-	const [categoryIndex, setCategoryIndex] = useState(0)
-	const [sortIndex, setSortIndex] = useState({
-		name: 'популярности',
-		sortProperty: 'rating',
-	})
 	const [currentPage, setCurrentPage] = useState(1)
 	const [amountPages, setAmountPages] = useState(0)
 
@@ -45,11 +46,8 @@ export default function Home() {
 	return (
 		<>
 			<div className='content__top'>
-				<Categories
-					value={categoryIndex}
-					onClickCategory={(index) => setCategoryIndex(index)}
-				/>
-				<Sort value={sortIndex} onClickSort={(index) => setSortIndex(index)} />
+				<Categories />
+				<Sort />
 			</div>
 			<h2 className='content__title'>Все пиццы</h2>
 			<div className='content__items'>{isLoading ? skeleton : items}</div>
