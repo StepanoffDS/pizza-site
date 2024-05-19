@@ -1,5 +1,7 @@
 import NotFoundBlock from '../components/NotFoundBlock/NotFoundBlock'
 
-export default function NotFound() {
+const NotFound = () => {
 	return <NotFoundBlock />
 }
+
+export default NotFound

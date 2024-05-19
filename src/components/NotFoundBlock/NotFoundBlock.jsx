@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-export default function NotFoundBlock() {
+const NotFoundBlock = () => {
 	return (
 		<div style={{ textAlign: 'center' }}>
 			<h2 style={{ marginBottom: '1rem' }}>Ничего не найдено</h2>
@@ -10,3 +10,5 @@ export default function NotFoundBlock() {
 		</div>
 	)
 }
+
+export default NotFoundBlock

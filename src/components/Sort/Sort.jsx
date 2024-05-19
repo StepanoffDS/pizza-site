@@ -5,7 +5,7 @@ import { setSortType } from '../../store/slices/filterSlice'
 
 import styles from './Sort.module.scss'
 
-const list = [
+export const sortList = [
 	{
 		name: 'популярности',
 		sortProperty: 'rating',
@@ -26,7 +26,6 @@ export default function Sort() {
 
 	const [isVisiblePopup, setIsVisiblePopup] = useState(false)
 	const selectedItem = sortIndex.name
-	const sortingArea = useRef(null)
 
 	function closePopup(e) {
 		e.stopPropagation()
@@ -38,8 +37,10 @@ export default function Sort() {
 		return () => document.removeEventListener('click', closePopup)
 	}, [isVisiblePopup])
 
+	useEffect(() => {}, [])
+
 	return (
-		<div className={styles.sorting} ref={sortingArea}>
+		<div className={styles.sorting}>
 			<button
 				onClick={(e) => {
 					e.stopPropagation()
@@ -65,8 +66,8 @@ export default function Sort() {
 			{isVisiblePopup && (
 				<div className={styles.popup}>
 					<ul>
-						{list.map((obj, index) => (
-							<li key={obj.sort}>
+						{sortList.map((obj, index) => (
+							<li key={index}>
 								<button
 									className={`${styles.item} ${
 										sortIndex.sortProperty === obj.sortProperty

@@ -1,9 +1,30 @@
-import { useContext } from 'react'
+import { useState, useCallback, useContext, useEffect, useRef } from 'react'
+import debounce from 'lodash.debounce'
 import styles from './Search.module.scss'
 import { SearchContext } from '../../App'
 
-export default function Search() {
+const Search = () => {
+	const [value, setValue] = useState('')
 	const { searchValue, setSearchValue } = useContext(SearchContext)
+	const inputRef = useRef(null)
+
+	const onClickClear = () => {
+		setSearchValue('')
+		setValue('')
+		inputRef.current.focus()
+	}
+
+	const onChangeInput = (e) => {
+		setValue(e.target.value)
+		updateSearchValue(e.target.value)
+	}
+
+	const updateSearchValue = useCallback(
+		debounce((str) => {
+			setSearchValue(str)
+		}, 300),
+		[setSearchValue, setValue]
+	)
 
 	return (
 		<div className={styles.root}>
@@ -11,17 +32,18 @@ export default function Search() {
 				className={styles.input}
 				type='text'
 				placeholder='Поиск пиццы...'
-				value={searchValue}
-				onChange={(e) => setSearchValue(e.target.value)}
+				value={value}
+				onChange={onChangeInput}
+				ref={inputRef}
 			/>
-			{searchValue && (
+			{value && (
 				<svg
 					className={styles.icon}
 					xmlns='http://www.w3.org/2000/svg'
 					width='1em'
 					height='1em'
 					viewBox='0 0 24 24'
-					onClick={() => setSearchValue('')}
+					onClick={onClickClear}
 				>
 					<path
 						fill='currentColor'
@@ -32,3 +54,5 @@ export default function Search() {
 		</div>
 	)
 }
+
+export default Search

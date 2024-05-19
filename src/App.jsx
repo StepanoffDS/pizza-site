@@ -10,7 +10,7 @@ import './App.scss'
 
 export const SearchContext = createContext()
 
-export default function App() {
+const App = () => {
 	const [searchValue, setSearchValue] = useState('')
 
 	return (
@@ -30,3 +30,5 @@ export default function App() {
 		</div>
 	)
 }
+
+export default App

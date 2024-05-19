@@ -1,17 +1,21 @@
 import { Link } from 'react-router-dom'
 import styles from './CartBlock.module.scss'
 
-export default function CartBottom() {
+import { useDispatch, useSelector } from 'react-redux'
+
+const CartBottom = () => {
+	const { totalPrice, totalCount } = useSelector((state) => state.cartReducer)
+
 	return (
 		<div className={styles.bottom}>
 			<div className={styles.details}>
 				<span>
 					{' '}
-					Всего пицц: <b>3 шт.</b>{' '}
+					Всего пицц: <b>{totalCount} шт.</b>{' '}
 				</span>
 				<span>
 					{' '}
-					Сумма заказа: <b>900 ₽</b>{' '}
+					Сумма заказа: <b>{totalPrice} ₽</b>{' '}
 				</span>
 			</div>
 			<div className={styles.buttons}>
@@ -29,9 +33,9 @@ export default function CartBottom() {
 						<path
 							d='M7 13L1 6.93015L6.86175 1'
 							stroke='#D3D3D3'
-							stroke-width='0'
-							stroke-linecap='round'
-							stroke-linejoin='round'
+							strokeWidth='0'
+							strokeLinecap='round'
+							strokeLinejoin='round'
 						/>
 					</svg>
 
@@ -44,3 +48,4 @@ export default function CartBottom() {
 		</div>
 	)
 }
+export default CartBottom

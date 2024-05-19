@@ -12,7 +12,7 @@ const categories = [
 	'Закрытые',
 ]
 
-export default function Categories() {
+const Categories = () => {
 	const dispatch = useDispatch()
 	const categoryIndex = useSelector((state) => state.filterReducer.categoryId)
 
@@ -35,3 +35,5 @@ export default function Categories() {
 		</div>
 	)
 }
+
+export default Categories

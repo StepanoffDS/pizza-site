@@ -12,6 +12,19 @@
 		border-color $duration ease-in-out;
 	border: 1px solid transparent;
 
+	&:disabled {
+		border-color: grey;
+		color: grey;
+		cursor: not-allowed;
+		path {
+			fill: grey;
+		}
+
+		&:hover {
+			background-color: grey;
+		}
+	}
+
 	&,
 	span {
 		color: #fff;
