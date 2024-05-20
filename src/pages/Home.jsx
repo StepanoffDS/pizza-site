@@ -1,6 +1,5 @@
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import axios from 'axios'
 import qs from 'qs'
 import { useNavigate } from 'react-router-dom'
 
@@ -9,44 +8,47 @@ import Categories from './../components/Categories/Categories'
 import Item from './../components/Item/Item'
 import ItemSkeleton from './../components/Item/ItemSkeleton'
 import Pagination from '../components/Pagination/Pagination'
-import { SearchContext } from '../App'
-import { setCurrentPage, setFilter } from '../store/slices/filterSlice'
+import {
+	selectFilterReducer,
+	setCurrentPage,
+	setFilter,
+} from '../store/slices/filterSlice'
+import { fetchPizzas, selectPizzaReducer } from '../store/slices/pizzasSlice'
 
 const Home = () => {
+	const { items, status } = useSelector(selectPizzaReducer)
 	const {
 		categoryId,
 		sort: sortIndex,
 		currentPage,
-	} = useSelector((state) => state.filterReducer)
+		searchValue,
+	} = useSelector(selectFilterReducer)
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
-	const isMounted = useRef(false)
 
-	const { searchValue } = useContext(SearchContext)
-	const [isLoading, setIsLoading] = useState(true)
-	const [pizzas, setPizzas] = useState([])
 	const [totalPages, setTotalPages] = useState(0)
 	const isSearch = useRef(false)
+	const isMounted = useRef(false)
 
 	const category = categoryId !== 0 ? `category=${categoryId}` : ''
 	const sortBy = sortIndex.sortProperty
 	const pagination = `page=${currentPage}&limit=${4}`
 
-	const fetchPizzas = async () => {
-		setIsLoading(true)
-
-		try {
-			const res = await axios.get(
-				`https://1201ac689d31d32b.mokky.dev/pizzas?${category}&sortBy=${sortBy}&title=*${searchValue}&${pagination}`
-			)
-			setPizzas(res.data)
-			setTotalPages(res.data.meta.total_pages)
-		} catch (error) {
-			console.log(`Error: ${error}`)
-			alert('Ошибка при получении пицц')
-		} finally {
-			setIsLoading(false)
-		}
+	const getPizzas = async () => {
+		dispatch(
+			fetchPizzas({
+				category,
+				sortBy,
+				pagination,
+				searchValue,
+			})
+		)
+			.then((res) => {
+				setTotalPages(res.payload.meta?.total_pages)
+			})
+			.catch((error) => {
+				console.log(error)
+			})
 	}
 
 	const onChangePage = (number) => {
@@ -85,7 +87,7 @@ const Home = () => {
 	// Если был первый рендер, то запрашиваем пиццы
 	useEffect(() => {
 		if (!isSearch.current) {
-			fetchPizzas()
+			getPizzas()
 		}
 
 		isSearch.current = false
@@ -96,7 +98,7 @@ const Home = () => {
 	const skeleton = [...new Array(4)].map((_, index) => (
 		<ItemSkeleton key={index} />
 	))
-	const items = pizzas.items?.map((item) => <Item {...item} key={item.id} />)
+	const pizzas = items?.items?.map((item) => <Item {...item} key={item.id} />)
 
 	return (
 		<>
@@ -105,8 +107,17 @@ const Home = () => {
 				<Sort />
 			</div>
 			<h2 className='content__title'>Все пиццы</h2>
-			<div className='content__items'>{isLoading ? skeleton : items}</div>
-			<Pagination onChangePage={onChangePage} totalPages={totalPages} />
+			{status === 'error' && (
+				<h3 style={{ marginTop: '2rem' }}>
+					Произошла ошибка при получении пицц :(
+				</h3>
+			)}
+			<div className='content__items'>
+				{status === 'loading' ? skeleton : pizzas}
+			</div>
+			{status === 'success' && (
+				<Pagination onChangePage={onChangePage} totalPages={totalPages} />
+			)}
 		</>
 	)
 }

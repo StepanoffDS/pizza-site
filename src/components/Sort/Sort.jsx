@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { setSortType } from '../../store/slices/filterSlice'
+import {
+	selectFilterReducer,
+	setSortType,
+} from '../../store/slices/filterSlice'
 
 import styles from './Sort.module.scss'
 
@@ -22,7 +25,7 @@ export const sortList = [
 
 export default function Sort() {
 	const dispatch = useDispatch()
-	const sortIndex = useSelector((state) => state.filterReducer.sort)
+	const { sort: sortIndex } = useSelector(selectFilterReducer)
 
 	const [isVisiblePopup, setIsVisiblePopup] = useState(false)
 	const selectedItem = sortIndex.name

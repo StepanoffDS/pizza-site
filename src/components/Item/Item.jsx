@@ -2,13 +2,13 @@ import { useState } from 'react'
 import styles from './Item.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { addItem } from '../../store/slices/cartSlice'
+import { addItem, selectCartReducer } from '../../store/slices/cartSlice'
+import { Link } from 'react-router-dom'
 
 const Content = ({ id, title, price, imageUrl, sizes, types }) => {
 	const dispatch = useDispatch()
-	const cartItem = useSelector((state) =>
-		state.cartReducer.items.find((obj) => obj.id === id)
-	)
+	const { items } = useSelector(selectCartReducer)
+	const cartItem = items.find((obj) => obj.id === id)
 	const addedCount = cartItem ? cartItem.count : 0
 
 	const [activeType, setActiveType] = useState(0)
@@ -30,7 +30,9 @@ const Content = ({ id, title, price, imageUrl, sizes, types }) => {
 
 	return (
 		<div className={styles.item}>
-			<img className={styles.image} src={imageUrl} alt='Pizza' />
+			<Link to={`/pizza-site/pizza/${id}`}>
+				<img className={styles.image} src={imageUrl} alt='Pizza' />
+			</Link>
 			<h4 className={styles.title}>{title}</h4>
 			<div className={styles.selector}>
 				<ul>

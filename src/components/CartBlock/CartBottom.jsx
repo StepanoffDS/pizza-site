@@ -2,9 +2,10 @@ import { Link } from 'react-router-dom'
 import styles from './CartBlock.module.scss'
 
 import { useDispatch, useSelector } from 'react-redux'
+import { selectCartReducer } from '../../store/slices/cartSlice'
 
 const CartBottom = () => {
-	const { totalPrice, totalCount } = useSelector((state) => state.cartReducer)
+	const { totalPrice, totalCount } = useSelector(selectCartReducer)
 
 	return (
 		<div className={styles.bottom}>

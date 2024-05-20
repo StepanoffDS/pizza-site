@@ -6,14 +6,14 @@ import CartBottom from './../components/CartBlock/CartBottom'
 
 import { useDispatch, useSelector } from 'react-redux'
 import CartEmpty from '../components/CartBlock/CartEmpty'
+import { selectCartReducer } from '../store/slices/cartSlice'
 
 const Cart = () => {
-	const { items } = useSelector((state) => state.cartReducer)
+	const { items } = useSelector(selectCartReducer)
 
 	if (!items.length) {
 		return <CartEmpty />
 	}
-	console.log(styles)
 
 	return (
 		<div className={styles.cart}>

@@ -1,5 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { setCategoryId } from '../../store/slices/filterSlice'
+import {
+	selectFilterReducer,
+	setCategoryId,
+} from '../../store/slices/filterSlice'
 
 import styles from './Categories.module.scss'
 
@@ -14,7 +17,7 @@ const categories = [
 
 const Categories = () => {
 	const dispatch = useDispatch()
-	const categoryIndex = useSelector((state) => state.filterReducer.categoryId)
+	const { categoryId: categoryIndex } = useSelector(selectFilterReducer)
 
 	return (
 		<div className={styles.categories}>

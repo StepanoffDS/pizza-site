@@ -5,10 +5,11 @@
 ## Stack:
 
 1. React.js v18+
-2. Redux Toolkit / RTK Query
-3. React Router v6
-4. REST API ([MOKKY.DEV](https://mokky.dev/))
-5. React Content Loader
+2. Redux Toolkit
+3. Redux ThunkAPI
+4. React Router v6
+5. REST API ([MOKKY.DEV](https://mokky.dev/))
+6. React Content Loader
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
