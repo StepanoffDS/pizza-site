@@ -1,19 +1,22 @@
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import qs from 'qs'
 import { useNavigate } from 'react-router-dom'
+import qs from 'qs'
 
-import Sort, { sortList } from './../components/Sort/Sort'
-import Categories from './../components/Categories/Categories'
-import Item from './../components/Item/Item'
-import ItemSkeleton from './../components/Item/ItemSkeleton'
+import Sort, { sortList } from '../components/Sort/Sort'
+import Categories from '../components/Categories/Categories'
+import Item from '../components/Item/Item'
+import ItemSkeleton from '../components/Item/ItemSkeleton'
 import Pagination from '../components/Pagination/Pagination'
 import {
 	selectFilterReducer,
 	setCurrentPage,
 	setFilter,
-} from '../store/slices/filterSlice'
-import { fetchPizzas, selectPizzaReducer } from '../store/slices/pizzasSlice'
+} from '../store/slices/filter/slice'
+import { selectPizzaReducer } from '../store/slices/pizzas/slice'
+import { fetchPizzas } from '../store/slices/pizzas/asyncActions'
+import { AppDispatch } from '../store/store'
+import { SortProps } from '../store/slices/filter/types'
 
 const Home = () => {
 	const { items, status } = useSelector(selectPizzaReducer)
@@ -23,7 +26,7 @@ const Home = () => {
 		currentPage,
 		searchValue,
 	} = useSelector(selectFilterReducer)
-	const dispatch = useDispatch()
+	const dispatch = useDispatch<AppDispatch>()
 	const navigate = useNavigate()
 
 	const [totalPages, setTotalPages] = useState(0)
@@ -43,7 +46,7 @@ const Home = () => {
 				searchValue,
 			})
 		)
-			.then((res) => {
+			.then((res: any) => {
 				setTotalPages(res.payload.meta?.total_pages)
 			})
 			.catch((error) => {
@@ -51,8 +54,8 @@ const Home = () => {
 			})
 	}
 
-	const onChangePage = (number) => {
-		dispatch(setCurrentPage(number))
+	const onChangePage = (page: number) => {
+		dispatch(setCurrentPage(page))
 	}
 
 	// Если уже был первый рендер и изменились параметры, то запрашиваем пиццы
@@ -62,6 +65,7 @@ const Home = () => {
 				sortProperty: sortIndex.sortProperty,
 				categoryId,
 				currentPage,
+				searchValue,
 			})
 			navigate(`?${queryString}`)
 		}
@@ -69,17 +73,23 @@ const Home = () => {
 		isMounted.current = true
 	}, [categoryId, sortIndex, searchValue, currentPage])
 
-	// Если был первый рендер, то проверяем URL-параметры и сохраняем в Redux
+	// Проверяем URL-параметры и сохраняем в Redux
 	useEffect(() => {
 		if (window.location.search) {
 			const params = qs.parse(window.location.search.substring(1))
 
-			const sort = sortList.find(
-				(obj) => obj.sortProperty === params.sortProperty
+			const sort: SortProps =
+				sortList.find((obj) => obj.sortProperty === params.sortProperty) ||
+				sortList[0]
+
+			dispatch(
+				setFilter({
+					searchValue: (params.searchValue || '').toString(),
+					categoryId: Number(params.categoryId) || 0,
+					currentPage: Number(params.currentPage) || 1,
+					sort,
+				})
 			)
-
-			dispatch(setFilter({ ...params, sort }))
-
 			isSearch.current = true
 		}
 	}, [])
@@ -103,8 +113,8 @@ const Home = () => {
 	return (
 		<>
 			<div className='content__top'>
-				<Categories />
-				<Sort />
+				<Categories categoryId={categoryId} />
+				<Sort sortIndex={sortIndex} />
 			</div>
 			<h2 className='content__title'>Все пиццы</h2>
 			{status === 'error' && (

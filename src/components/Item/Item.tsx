@@ -2,10 +2,22 @@ import { useState } from 'react'
 import styles from './Item.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { addItem, selectCartReducer } from '../../store/slices/cartSlice'
+import { addItem, selectCartReducer } from '../../store/slices/cart/slice'
 import { Link } from 'react-router-dom'
+import { CartItemProps } from '../../store/slices/cart/types'
 
-const Content = ({ id, title, price, imageUrl, sizes, types }) => {
+type ItemProps = {
+	id: number
+	title: string
+	price: number
+	imageUrl: string
+	sizes: number[]
+	types: number[]
+}
+
+const typeNames: string[] = ['тонкое', 'традиционное']
+
+const Item = ({ id, title, price, imageUrl, sizes, types }: ItemProps) => {
 	const dispatch = useDispatch()
 	const { items } = useSelector(selectCartReducer)
 	const cartItem = items.find((obj) => obj.id === id)
@@ -13,16 +25,16 @@ const Content = ({ id, title, price, imageUrl, sizes, types }) => {
 
 	const [activeType, setActiveType] = useState(0)
 	const [activeSize, setActiveSize] = useState(0)
-	const typeNames = ['тонкое', 'традиционное']
 
 	const onClickAdd = () => {
-		const item = {
+		const item: CartItemProps = {
 			id,
 			title,
 			price,
 			imageUrl,
 			type: typeNames[activeType],
 			size: sizes[activeSize],
+			count: 0,
 		}
 
 		dispatch(addItem(item))
@@ -83,11 +95,10 @@ const Content = ({ id, title, price, imageUrl, sizes, types }) => {
 						></path>
 					</svg>
 					<span>Добавить</span>
-					{/* <i>{addedCount}</i> */}
-					{addedCount > 0 && <i>{addedCount}</i>}
+					{addedCount ? addedCount > 0 && <i>{addedCount}</i> : ''}
 				</button>
 			</div>
 		</div>
 	)
 }
-export default Content
+export default Item

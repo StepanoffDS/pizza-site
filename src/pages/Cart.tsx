@@ -1,12 +1,12 @@
 import styles from './../components/CartBlock/CartBlock.module.scss'
 
-import CartTop from './../components/CartBlock/CartTop'
-import CartItem from './../components/CartBlock/CartItem'
-import CartBottom from './../components/CartBlock/CartBottom'
+import CartTop from '../components/CartBlock/CartTop'
+import CartItem from '../components/CartBlock/CartItem'
+import CartBottom from '../components/CartBlock/CartBottom'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import CartEmpty from '../components/CartBlock/CartEmpty'
-import { selectCartReducer } from '../store/slices/cartSlice'
+import { selectCartReducer } from '../store/slices/cart/slice'
 
 const Cart = () => {
 	const { items } = useSelector(selectCartReducer)

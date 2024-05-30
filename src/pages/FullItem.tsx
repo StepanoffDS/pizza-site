@@ -2,14 +2,26 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import { addItem, selectCartReducer } from '../store/slices/cartSlice'
+import { addItem, selectCartReducer } from '../store/slices/cart/slice'
+import { CartItemProps } from '../store/slices/cart/types'
+
+// interface IPizza {
+// 	id: number
+// 	imageUrl: string
+// 	title: string
+// 	types: number[]
+// 	sizes: number[]
+// 	price: number
+// 	category: number
+// 	rating: number
+// }
 
 const FullItem = () => {
 	const { id: idLink } = useParams()
-	const navigate = useNavigate()
 	const id = Number(idLink)
+	const navigate = useNavigate()
 
-	const [pizza, setPizza] = useState()
+	const [pizza, setPizza] = useState<CartItemProps>({} as CartItemProps)
 	const dispatch = useDispatch()
 	const { items } = useSelector(selectCartReducer)
 	const cartItem = items.find((obj) => obj.id === id)

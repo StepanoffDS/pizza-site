@@ -4,11 +4,21 @@ import styles from './Header.module.scss'
 import logo from '../../assets/img/pizza-logo.svg'
 import Search from '../Search/Search'
 import { useSelector } from 'react-redux'
-import { selectCartReducer } from '../../store/slices/cartSlice'
+import { selectCartReducer } from '../../store/slices/cart/slice'
+import { useEffect, useRef } from 'react'
 
-const Header = ({ searchValue, setSearchValue }) => {
-	const { totalPrice, totalCount } = useSelector(selectCartReducer)
+const Header = () => {
+	const { totalPrice, totalCount, items } = useSelector(selectCartReducer)
 	const location = useLocation()
+	const isMounted = useRef(false)
+
+	useEffect(() => {
+		if (isMounted.current) {
+			const json = JSON.stringify(items)
+			localStorage.setItem('cart', json)
+		}
+		isMounted.current = true
+	}, [totalCount, totalPrice, items])
 
 	return (
 		<div className={styles.header}>
@@ -21,7 +31,7 @@ const Header = ({ searchValue, setSearchValue }) => {
 						<p>самая вкусная пицца во вселенной</p>
 					</div>
 				</Link>
-				<Search searchValue={searchValue} setSearchValue={setSearchValue} />
+				<Search />
 				{location.pathname !== '/pizza-site/cart' ? (
 					<div className={styles.cart}>
 						<Link to='/pizza-site/cart' className='button button--cart'>

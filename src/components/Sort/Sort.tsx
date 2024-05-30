@@ -1,36 +1,35 @@
-import { useEffect, useRef, useState } from 'react'
-
-import { useDispatch, useSelector } from 'react-redux'
-import {
-	selectFilterReducer,
-	setSortType,
-} from '../../store/slices/filterSlice'
-
+import { memo, useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { setSortType } from '../../store/slices/filter/slice'
 import styles from './Sort.module.scss'
+import { SortProps, SortPropsNames } from '../../store/slices/filter/types'
 
-export const sortList = [
+export const sortList: SortProps[] = [
 	{
 		name: 'популярности',
-		sortProperty: 'rating',
+		sortProperty: SortPropsNames.RATING,
 	},
 	{
 		name: 'цене',
-		sortProperty: 'price',
+		sortProperty: SortPropsNames.PRICE,
 	},
 	{
 		name: 'алфавиту',
-		sortProperty: 'title',
+		sortProperty: SortPropsNames.TITLE,
 	},
 ]
 
-export default function Sort() {
+const Sort = memo(({ sortIndex }: { sortIndex: SortProps }) => {
 	const dispatch = useDispatch()
-	const { sort: sortIndex } = useSelector(selectFilterReducer)
 
 	const [isVisiblePopup, setIsVisiblePopup] = useState(false)
 	const selectedItem = sortIndex.name
 
-	function closePopup(e) {
+	const onClickListItem = (obj: SortProps) => {
+		dispatch(setSortType(obj))
+	}
+
+	function closePopup(e: MouseEvent) {
 		e.stopPropagation()
 		setIsVisiblePopup(false)
 	}
@@ -77,7 +76,7 @@ export default function Sort() {
 											? styles.active
 											: ''
 									}`}
-									onClick={() => dispatch(setSortType(obj))}
+									onClick={() => onClickListItem(obj)}
 								>
 									{obj.name}
 								</button>
@@ -88,4 +87,6 @@ export default function Sort() {
 			)}
 		</div>
 	)
-}
+})
+
+export default Sort

@@ -1,7 +1,7 @@
 import styles from './CartBlock.module.scss'
 import { useDispatch } from 'react-redux'
 
-import { clearCart } from '../../store/slices/cartSlice'
+import { clearCart } from '../../store/slices/cart/slice'
 
 const CartTop = () => {
 	const dispatch = useDispatch()

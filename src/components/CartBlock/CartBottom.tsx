@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import styles from './CartBlock.module.scss'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { selectCartReducer } from '../../store/slices/cartSlice'
+import { selectCartReducer } from '../../store/slices/cart/slice'
 
 const CartBottom = () => {
 	const { totalPrice, totalCount } = useSelector(selectCartReducer)

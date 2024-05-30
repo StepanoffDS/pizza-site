@@ -1,9 +1,27 @@
 import styles from './CartBlock.module.scss'
 
 import { useDispatch } from 'react-redux'
-import { removeItem, plusItem, minusItem } from './../../store/slices/cartSlice'
+import { removeItem, plusItem, minusItem } from '../../store/slices/cart/slice'
 
-const CartItem = ({ id, title, price, type, size, count, imageUrl }) => {
+type CartItemProps = {
+	id: number
+	title: string
+	price: number
+	type: string
+	size: number
+	count: number
+	imageUrl: string
+}
+
+const CartItem = ({
+	id,
+	title,
+	price,
+	type,
+	size,
+	count,
+	imageUrl,
+}: CartItemProps) => {
 	const dispatch = useDispatch()
 
 	const onClickPlus = () => {

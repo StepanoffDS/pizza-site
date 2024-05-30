@@ -1,12 +1,11 @@
-import { useDispatch, useSelector } from 'react-redux'
-import {
-	selectFilterReducer,
-	setCategoryId,
-} from '../../store/slices/filterSlice'
+import React from 'react'
+import { memo } from 'react'
+import { useDispatch } from 'react-redux'
+import { setCategoryId } from '../../store/slices/filter/slice'
 
 import styles from './Categories.module.scss'
 
-const categories = [
+const categories: string[] = [
 	'Все',
 	'Мясные',
 	'Вегетарианская',
@@ -15,9 +14,8 @@ const categories = [
 	'Закрытые',
 ]
 
-const Categories = () => {
+const Categories = memo(({ categoryId }: { categoryId: number }) => {
 	const dispatch = useDispatch()
-	const { categoryId: categoryIndex } = useSelector(selectFilterReducer)
 
 	return (
 		<div className={styles.categories}>
@@ -27,7 +25,7 @@ const Categories = () => {
 						<button
 							onClick={() => dispatch(setCategoryId(index))}
 							className={`${styles.item} ${
-								categoryIndex === index ? styles.active : ''
+								categoryId === index ? styles.active : ''
 							}`}
 						>
 							{categoryName}
@@ -37,6 +35,6 @@ const Categories = () => {
 			</ul>
 		</div>
 	)
-}
+})
 
 export default Categories
